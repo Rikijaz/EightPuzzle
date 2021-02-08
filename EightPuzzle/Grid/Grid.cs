@@ -81,9 +81,6 @@ namespace EightPuzzle.Grid
 			return true;
 		}
 
-		public bool IsSolved() =>
-			Tiles[TileLength - 1][TileLength - 1].Value == GridUtility.EmptyTileValue;
-
 		IReadOnlyList<IReadOnlyList<Tile>> IGridReader.Tiles
 		{
 			get { return Tiles; }

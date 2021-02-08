@@ -9,7 +9,5 @@ namespace EightPuzzle.Grid
 	public interface IGridReader
 	{
 		IReadOnlyList<IReadOnlyList<Tile>> Tiles { get; }
-
-		bool IsSolved();
 	}
 }

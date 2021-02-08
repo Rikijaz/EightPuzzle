@@ -11,5 +11,11 @@
 		}
 
 		public uint Value { get; }
+
+		public static bool operator ==(Tile leftTile, Tile rightTile) =>
+			leftTile.Value == rightTile.Value;
+
+		public static bool operator !=(Tile leftTile, Tile rightTile) =>
+			leftTile.Value != rightTile.Value;
 	}
 }

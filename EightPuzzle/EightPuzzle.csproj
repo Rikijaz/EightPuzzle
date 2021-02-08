@@ -42,6 +42,7 @@
         <Compile Include="Grid\GridUtility.cs" />
         <Compile Include="Grid\IGridController.cs" />
         <Compile Include="Grid\IGridReader.cs" />
+        <Compile Include="Grid\PuzzleAnswer.cs" />
         <Compile Include="Program.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
         <Compile Include="Tile.cs" />
