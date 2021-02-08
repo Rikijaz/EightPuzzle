@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EightPuzzle", "EightPuzzle\EightPuzzle.csproj", "{9EADC128-1E83-4D9F-8F32-1EF504A9C869}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9EADC128-1E83-4D9F-8F32-1EF504A9C869}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EADC128-1E83-4D9F-8F32-1EF504A9C869}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EADC128-1E83-4D9F-8F32-1EF504A9C869}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EADC128-1E83-4D9F-8F32-1EF504A9C869}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

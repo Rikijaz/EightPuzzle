@@ -1,0 +1,11 @@
+﻿# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/projectSettingsUpdater.xml
+/.idea.EightPuzzle.iml
+/modules.xml
+# Datasource local storage ignored files
+/../../../../../../../:\Projects\test_shit\EightPuzzle\.idea\.idea.EightPuzzle\.idea/dataSources/
+/dataSources.local.xml
