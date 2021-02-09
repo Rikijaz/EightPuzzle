@@ -9,10 +9,10 @@ namespace EightPuzzle.Program.Tiles
 {
 	public class TileGrid : ITileGridState
 	{
-		public TileGrid(Tile[,] tiles, uint gridLength)
+		public TileGrid(Tile[,] tiles, uint gridDimension)
 		{
 			Tiles = tiles;
-			GridLength = gridLength;
+			GridDimension = gridDimension;
 		}
 
 		public Tile[,] Tiles { get; }
@@ -23,10 +23,10 @@ namespace EightPuzzle.Program.Tiles
 			private set { Tiles[tilePosition.X, tilePosition.Y] = value; }
 		}
 
-		public uint GridLength { get; }
+		public uint GridDimension { get; }
 
 		public bool IsValidCoordinate(int coordinate) =>
-			(coordinate >= 0) && (coordinate < GridLength);
+			(coordinate >= 0) && (coordinate < GridDimension);
 
 		public void Swap(in TilePosition tilePositionA, in TilePosition tilePositionB)
 		{
@@ -37,13 +37,28 @@ namespace EightPuzzle.Program.Tiles
 			this[tilePositionB] = tileA;
 		}
 
+		public TileGrid DeepClone()
+		{
+			Tile[,] tiles = new Tile[GridDimension, GridDimension];
+
+			for (uint y = 0; y < GridDimension; ++y)
+			{
+				for (uint x = 0; x < GridDimension; ++x)
+				{
+					tiles[x, y] = Tiles[x, y];
+				}
+			}
+
+			return new TileGrid(tiles, GridDimension);
+		}
+
 		public override string ToString()
 		{
 			StringBuilder stringBuilder = new StringBuilder();
 
-			for (uint y = 0; y < GridLength; ++y)
+			for (uint y = 0; y < GridDimension; ++y)
 			{
-				for (uint x = 0; x < GridLength; ++x)
+				for (uint x = 0; x < GridDimension; ++x)
 				{
 					stringBuilder.Append(Tiles[x, y] + " ");
 				}

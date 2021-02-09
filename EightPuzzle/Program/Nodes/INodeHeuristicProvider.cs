@@ -6,8 +6,10 @@ using EightPuzzle.Program.Tiles;
 
 namespace EightPuzzle.Program.Nodes
 {
-	public interface INodeState
+	public interface INodeHeuristicProvider
 	{
 		ITileGridState TileGridState { get; }
+
+		uint Cost { get; set; }
 	}
 }

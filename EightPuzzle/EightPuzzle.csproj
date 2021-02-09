@@ -39,8 +39,11 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Program\Nodes\INodeController.cs" />
-        <Compile Include="Program\Nodes\INodeState.cs" />
+        <Compile Include="Program\NodePriorityQueue.cs" />
+        <Compile Include="Program\QueuingStrategy.cs" />
+        <Compile Include="Program\Solver.cs" />
+        <Compile Include="Program\Nodes\INodeTileController.cs" />
+        <Compile Include="Program\Nodes\INodeHeuristicProvider.cs" />
         <Compile Include="Program\Nodes\Node.cs" />
         <Compile Include="Program\Problem.cs" />
         <Compile Include="Program\Program.cs" />

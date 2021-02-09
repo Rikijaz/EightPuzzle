@@ -1,6 +1,7 @@
 ﻿#region
 
 using EightPuzzle.Program.Tiles;
+using EightPuzzle.Program.Utility;
 
 #endregion
 
@@ -8,28 +9,40 @@ namespace EightPuzzle.Program
 {
 	public class Problem
 	{
-		public Problem(ITileGridState initialGridState, ITileGridState finalGridState)
+		public Problem(
+			TileGrid initialGrid,
+			ITileGridState finalGridState)
 		{
-			InitialGridState = initialGridState;
+			InitialGrid = initialGrid;
 			FinalGridState = finalGridState;
 		}
 
-		public ITileGridState InitialGridState { get; }
+		public TileGrid InitialGrid { get; }
 
-		private ITileGridState FinalGridState { get; }
+		public ITileGridState FinalGridState { get; }
 
-		public bool IsPuzzleSolved(ITileGridState tileGridState)
+		public bool Solve(ITileGridState tileGridState)
 		{
-			for (int x = 0; x < tileGridState.GridLength; x++)
+			for (int x = 0; x < tileGridState.GridDimension; x++)
 			{
-				for (int y = 0; y < tileGridState.GridLength; y++)
+				for (int y = 0; y < tileGridState.GridDimension; y++)
 				{
 					TilePosition tilePosition = new TilePosition(x, y);
 
-					if (tileGridState[tilePosition] != FinalGridState[tilePosition])
+					Tile tile = tileGridState[tilePosition];
+
+					Tile answerTile = FinalGridState[tilePosition];
+
+					if (tile == answerTile)
 					{
-						return false;
+						continue;
 					}
+
+					LogUtility.Log(
+						$"Puzzle is not solved. The value at {tilePosition} should be {answerTile}, not {tile}.",
+						LogLevel.Trace);
+
+					return false;
 				}
 			}
 

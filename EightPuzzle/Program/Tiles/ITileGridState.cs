@@ -4,6 +4,6 @@
 	{
 		Tile this[TilePosition tilePosition] { get; }
 
-		uint GridLength { get; }
+		uint GridDimension { get; }
 	}
 }

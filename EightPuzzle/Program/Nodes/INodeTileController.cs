@@ -1,6 +1,6 @@
 ﻿namespace EightPuzzle.Program.Nodes
 {
-	public interface INodeController
+	public interface INodeTileController
 	{
 		public bool MoveLeft();
 
