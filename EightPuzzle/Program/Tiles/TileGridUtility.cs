@@ -1,4 +1,10 @@
-﻿namespace EightPuzzle.Program.Tiles
+﻿#region
+
+using System.Collections.Generic;
+
+#endregion
+
+namespace EightPuzzle.Program.Tiles
 {
 	public static class TileGridUtility
 	{
@@ -41,29 +47,37 @@
 			return false;
 		}
 
-		public static ITileGridState CreateAnswerInstance(uint gridDimension)
+		public static Solution CreateAnswerInstance(uint gridDimension)
 		{
 			Tile[,] tiles = new Tile[gridDimension, gridDimension];
 
+			Dictionary<Tile, TilePosition> tilePositionsByTile =
+				new Dictionary<Tile, TilePosition>(tiles.Length);
+
 			uint value = 1;
 
-			for (uint y = 0; y < gridDimension; y++)
+			for (int column = 0; column < gridDimension; column++)
 			{
-				for (uint x = 0; x < gridDimension; x++)
+				for (int row = 0; row < gridDimension; row++)
 				{
 					if (value == tiles.Length)
 					{
-						tiles[x, y] = new Tile(EmptyTileValue);
+						tiles[row, column] = new Tile(EmptyTileValue);
 					}
 					else
 					{
-						tiles[x, y] = new Tile(value);
-						value++;
+						tiles[row, column] = new Tile(value);
 					}
+
+					TilePosition tilePosition = new TilePosition(row, column);
+					tilePositionsByTile.Add(tiles[row, column], tilePosition);
+					value++;
 				}
 			}
 
-			return new TileGrid(tiles, gridDimension);
+			TileGrid tileGrid = new TileGrid(tiles, gridDimension);
+
+			return new Solution(tileGrid, tilePositionsByTile);
 		}
 
 		public static TileGrid DeepClone(uint gridDimension)

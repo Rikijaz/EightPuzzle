@@ -10,6 +10,8 @@ namespace EightPuzzle.Program.Nodes
 	{
 		ITileGridState TileGridState { get; }
 
+		TilePosition EmptyTilePosition { get; }
+
 		uint CurrentCost { get; set; }
 
 		uint StartCost { get; set; }

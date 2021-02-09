@@ -17,8 +17,8 @@ namespace EightPuzzle.Program
 		{
 			NodePriorityQueue nodePriorityQueue = CreateInitialNodes(
 				problem.InitialGrid,
-				problem.FinalGridState,
-				queuingStrategy);
+				queuingStrategy,
+				problem.Solution);
 
 			while (nodePriorityQueue.Count > 0)
 			{
@@ -34,7 +34,7 @@ namespace EightPuzzle.Program
 				nodePriorityQueue = queuingStrategy.CreateNodes(
 					nodePriorityQueue,
 					expandedNodes,
-					problem.FinalGridState);
+					problem.Solution);
 			}
 
 			return false;
@@ -42,8 +42,8 @@ namespace EightPuzzle.Program
 
 		private static NodePriorityQueue CreateInitialNodes(
 			TileGrid problemInitialGrid,
-			ITileGridState problemFinalGridState,
-			QueuingStrategy queuingStrategy)
+			QueuingStrategy queuingStrategy,
+			Solution solution)
 		{
 			if (!TileGridUtility.TryFindEmptyTilePosition(
 				problemInitialGrid,
@@ -52,11 +52,14 @@ namespace EightPuzzle.Program
 				LogUtility.Log("Problem does not contain an empty tile", LogLevel.Error);
 			}
 
-			uint baseCost = queuingStrategy.CalculateCurrentCost(
-				problemInitialGrid,
-				problemFinalGridState);
+			Node baseNode = new Node(problemInitialGrid, emptyTilePosition);
 
-			Node baseNode = new Node(problemInitialGrid, emptyTilePosition, baseCost);
+			uint baseCost = queuingStrategy.CalculateCurrentCost(
+				baseNode,
+				solution);
+
+			baseNode.StartCost = baseCost;
+			baseNode.CurrentCost = 0;
 
 			return NodePriorityQueueBuilder.CreateInstance(baseNode);
 		}

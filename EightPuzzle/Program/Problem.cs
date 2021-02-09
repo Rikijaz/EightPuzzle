@@ -11,15 +11,15 @@ namespace EightPuzzle.Program
 	{
 		public Problem(
 			TileGrid initialGrid,
-			ITileGridState finalGridState)
+			Solution solution)
 		{
 			InitialGrid = initialGrid;
-			FinalGridState = finalGridState;
+			Solution = solution;
 		}
 
 		public TileGrid InitialGrid { get; }
 
-		public ITileGridState FinalGridState { get; }
+		public Solution Solution { get; }
 
 		public bool Solve(ITileGridState tileGridState)
 		{
@@ -31,7 +31,7 @@ namespace EightPuzzle.Program
 
 					Tile tile = tileGridState[tilePosition];
 
-					Tile answerTile = FinalGridState[tilePosition];
+					Tile answerTile = Solution.GridState[tilePosition];
 
 					if (tile == answerTile)
 					{

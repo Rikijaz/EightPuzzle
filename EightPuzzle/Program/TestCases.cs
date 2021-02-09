@@ -90,7 +90,7 @@ namespace EightPuzzle.Program
 
 		public static readonly IReadOnlyDictionary<uint, Problem> ProblemsByDepth;
 
-		private static readonly ITileGridState SolutionGridState =
+		private static readonly Solution Solution =
 			TileGridUtility.CreateAnswerInstance(PuzzleGridDimension);
 
 		static TestCases()
@@ -106,7 +106,7 @@ namespace EightPuzzle.Program
 
 				Problem problem = new Problem(
 					TileGridUtility.CreateInputInstance(testCase, PuzzleGridDimension),
-					SolutionGridState);
+					Solution);
 
 				problemsByDepth.Add(depth, problem);
 			}

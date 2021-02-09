@@ -24,6 +24,16 @@
 			}
 		}
 
+		private bool Equals(TilePosition other) => (X == other.X) && (Y == other.Y);
+
+		public override bool Equals(object obj) => obj is TilePosition other && Equals(other);
+
+		public static bool operator ==(TilePosition leftTile, TilePosition rightTile) =>
+			(leftTile.X == rightTile.X) && (leftTile.Y == rightTile.Y);
+
+		public static bool operator !=(TilePosition leftTile, TilePosition rightTile) =>
+			(leftTile.X != rightTile.X) && (leftTile.Y != rightTile.Y);
+
 		public override string ToString() => $"[{X}, {Y}]";
 	}
 }

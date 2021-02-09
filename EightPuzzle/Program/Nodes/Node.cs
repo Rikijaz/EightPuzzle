@@ -13,11 +13,27 @@ namespace EightPuzzle.Program.Nodes
 	 */
 	public class Node : INodeHeuristicProvider
 	{
-		public Node(in TileGrid tileGrid, in TilePosition emptyTilePosition, uint cost)
+		public Node(
+			in TileGrid tileGrid,
+			in TilePosition emptyTilePosition,
+			uint startCost,
+			uint currentCost)
 		{
 			TileGrid = tileGrid;
 			EmptyTilePosition = emptyTilePosition;
-			CurrentCost = cost;
+			StartCost = startCost;
+			CurrentCost = currentCost;
+			TilePositionHistory = new HashSet<TilePosition>();
+		}
+
+		public Node(
+			in TileGrid tileGrid,
+			in TilePosition emptyTilePosition)
+		{
+			TileGrid = tileGrid;
+			EmptyTilePosition = emptyTilePosition;
+			StartCost = 0;
+			CurrentCost = 0;
 			TilePositionHistory = new HashSet<TilePosition>();
 		}
 
@@ -25,7 +41,7 @@ namespace EightPuzzle.Program.Nodes
 
 		private TileGrid TileGrid { get; }
 
-		private TilePosition EmptyTilePosition { get; set; }
+		public TilePosition EmptyTilePosition { get; private set; }
 
 		public uint CurrentCost { get; set; }
 
@@ -108,7 +124,8 @@ namespace EightPuzzle.Program.Nodes
 			return true;
 		}
 
-		public Node DeepClone() => new Node(TileGrid.DeepClone(), EmptyTilePosition, CurrentCost);
+		public Node DeepClone() =>
+			new Node(TileGrid.DeepClone(), EmptyTilePosition, StartCost, CurrentCost);
 
 		private bool ProcessMovement(int changedCoordinate, TilePosition newEmptyTilePosition)
 		{

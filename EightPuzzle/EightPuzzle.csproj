@@ -42,8 +42,10 @@
         <Compile Include="Program\Nodes\PriorityQueue\NodeCostComparer.cs" />
         <Compile Include="Program\Nodes\PriorityQueue\NodePriorityQueue.cs" />
         <Compile Include="Program\Nodes\PriorityQueue\NodePriorityQueueBuilder.cs" />
+        <Compile Include="Program\QueueingStrategy\ManhattanDistanceQueuingStrategy.cs" />
         <Compile Include="Program\QueueingStrategy\MisplacedTileQueuingStrategy.cs" />
         <Compile Include="Program\QueueingStrategy\QueuingStrategy.cs" />
+        <Compile Include="Program\Solution.cs" />
         <Compile Include="Program\Solver.cs" />
         <Compile Include="Program\Nodes\INodeTileController.cs" />
         <Compile Include="Program\Nodes\INodeHeuristicProvider.cs" />

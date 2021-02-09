@@ -9,6 +9,14 @@
 
 		public override bool Equals(object obj) => obj is Tile other && Equals(other);
 
+		public static bool operator ==(Tile leftTile, Tile rightTile) =>
+			leftTile.Value == rightTile.Value;
+
+		public static bool operator !=(Tile leftTile, Tile rightTile) =>
+			leftTile.Value != rightTile.Value;
+
+		public override string ToString() => Value.ToString();
+
 		public override int GetHashCode() => (int) Value;
 
 		public Tile(uint value)
@@ -17,13 +25,5 @@
 		}
 
 		public uint Value { get; }
-
-		public static bool operator ==(Tile leftTile, Tile rightTile) =>
-			leftTile.Value == rightTile.Value;
-
-		public override string ToString() => Value.ToString();
-
-		public static bool operator !=(Tile leftTile, Tile rightTile) =>
-			leftTile.Value != rightTile.Value;
 	}
 }

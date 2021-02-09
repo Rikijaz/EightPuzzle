@@ -7,12 +7,12 @@ using EightPuzzle.Program.Tiles;
 
 namespace EightPuzzle.Program.QueueingStrategy
 {
-	public class MisplacedTileQueuingStrategy : QueuingStrategy
+	public class ManhattanDistanceQueuingStrategy : QueuingStrategy
 	{
-		public static readonly MisplacedTileQueuingStrategy Instance =
-			new MisplacedTileQueuingStrategy();
+		public static readonly ManhattanDistanceQueuingStrategy Instance =
+			new ManhattanDistanceQueuingStrategy();
 
-		private MisplacedTileQueuingStrategy()
+		private ManhattanDistanceQueuingStrategy()
 		{
 		}
 
@@ -20,7 +20,7 @@ namespace EightPuzzle.Program.QueueingStrategy
 			INodeHeuristicProvider nodeHeuristicProvider,
 			Solution solution)
 		{
-			uint misplacedTileCount = 0;
+			uint currentCost = 0;
 
 			ITileGridState tileGridState = nodeHeuristicProvider.TileGridState;
 
@@ -30,15 +30,14 @@ namespace EightPuzzle.Program.QueueingStrategy
 				{
 					TilePosition tilePosition = new TilePosition(x, y);
 
-					if ((tileGridState[tilePosition] != solution.GridState[tilePosition]) &&
-						(nodeHeuristicProvider.EmptyTilePosition != tilePosition))
+					if (tileGridState[tilePosition] != solution.GridState[tilePosition])
 					{
-						misplacedTileCount++;
+						currentCost++;
 					}
 				}
 			}
 
-			return misplacedTileCount;
+			return currentCost;
 		}
 	}
 }

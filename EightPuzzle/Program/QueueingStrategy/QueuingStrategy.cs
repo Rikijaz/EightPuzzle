@@ -14,12 +14,12 @@ namespace EightPuzzle.Program.QueueingStrategy
 		public NodePriorityQueue CreateNodes(
 			NodePriorityQueue nodePriorityQueue,
 			List<Node> expandedNodes,
-			ITileGridState finalGridState)
+			Solution solution)
 		{
 			for (int i = 0; i < expandedNodes.Count; i++)
 			{
 				Node newNode = expandedNodes[i];
-				newNode.CurrentCost = CalculateCurrentCost(newNode.TileGridState, finalGridState);
+				newNode.CurrentCost = CalculateCurrentCost(newNode, solution);
 				nodePriorityQueue.Enqueue(newNode);
 			}
 
@@ -27,7 +27,7 @@ namespace EightPuzzle.Program.QueueingStrategy
 		}
 
 		public abstract uint CalculateCurrentCost(
-			ITileGridState gridState,
-			ITileGridState finalGridState);
+			INodeHeuristicProvider nodeHeuristicProvider,
+			Solution solution);
 	}
 }
