@@ -8,7 +8,7 @@ namespace EightPuzzle.Program.Utility
 {
 	public static class LogUtility
 	{
-		private const LogLevel Level = LogLevel.Trace;
+		private const LogLevel Level = LogLevel.Debug;
 
 		public static void Log(string message, LogLevel logLevel)
 		{

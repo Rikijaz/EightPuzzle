@@ -2,6 +2,8 @@
 
 using System.Collections.Generic;
 using EightPuzzle.Program.Nodes;
+using EightPuzzle.Program.Nodes.PriorityQueue;
+using EightPuzzle.Program.QueueingStrategy;
 using EightPuzzle.Program.Tiles;
 using EightPuzzle.Program.Utility;
 
@@ -9,15 +11,18 @@ using EightPuzzle.Program.Utility;
 
 namespace EightPuzzle.Program
 {
-	public class Solver
+	public static class Solver
 	{
-		public bool GeneralSearch(Problem problem, QueuingStrategy queuingStrategy)
+		public static bool GeneralSearch(Problem problem, QueuingStrategy queuingStrategy)
 		{
-			Queue<Node> nodes = CreateInitialNodes(problem.InitialGrid);
+			NodePriorityQueue nodePriorityQueue = CreateInitialNodes(
+				problem.InitialGrid,
+				problem.FinalGridState,
+				queuingStrategy);
 
-			while (nodes.Count > 0)
+			while (nodePriorityQueue.Count > 0)
 			{
-				Node node = nodes.Dequeue();
+				Node node = nodePriorityQueue.Dequeue();
 
 				if (problem.Solve(node.TileGridState))
 				{
@@ -25,13 +30,20 @@ namespace EightPuzzle.Program
 				}
 
 				List<Node> expandedNodes = ExpandNodes(node);
-				nodes = queuingStrategy.CreateNodes(nodes, expandedNodes, problem.FinalGridState);
+
+				nodePriorityQueue = queuingStrategy.CreateNodes(
+					nodePriorityQueue,
+					expandedNodes,
+					problem.FinalGridState);
 			}
 
 			return false;
 		}
 
-		private static Queue<Node> CreateInitialNodes(TileGrid problemInitialGrid)
+		private static NodePriorityQueue CreateInitialNodes(
+			TileGrid problemInitialGrid,
+			ITileGridState problemFinalGridState,
+			QueuingStrategy queuingStrategy)
 		{
 			if (!TileGridUtility.TryFindEmptyTilePosition(
 				problemInitialGrid,
@@ -40,44 +52,54 @@ namespace EightPuzzle.Program
 				LogUtility.Log("Problem does not contain an empty tile", LogLevel.Error);
 			}
 
-			Node[] initialNodes =
-			{
-				new Node(problemInitialGrid, emptyTilePosition, 0),
-			};
+			uint baseCost = queuingStrategy.CalculateCurrentCost(
+				problemInitialGrid,
+				problemFinalGridState);
 
-			return new Queue<Node>(initialNodes);
+			Node baseNode = new Node(problemInitialGrid, emptyTilePosition, baseCost);
+
+			return NodePriorityQueueBuilder.CreateInstance(baseNode);
 		}
 
-		private static List<Node> ExpandNodes(Node node)
+		private static List<Node> ExpandNodes(Node baseNode)
 		{
 			List<Node> expandedNodes = new List<Node>();
 
-			Node expandedNode = node.DeepClone();
+			Node baseNodeClone = baseNode.DeepClone();
 
-			if (expandedNode.MoveLeft())
+			if (baseNodeClone.MoveEmptyTileLeft())
 			{
-				expandedNodes.Add(expandedNode);
-				expandedNode = node.DeepClone();
+				baseNodeClone = ProcessNodeExpansion(baseNode, baseNodeClone, expandedNodes);
 			}
 
-			if (expandedNode.MoveRight())
+			if (baseNodeClone.MoveEmptyTileRight())
 			{
-				expandedNodes.Add(expandedNode);
-				expandedNode = node.DeepClone();
+				baseNodeClone = ProcessNodeExpansion(baseNode, baseNodeClone, expandedNodes);
 			}
 
-			if (expandedNode.MoveDown())
+			if (baseNodeClone.MoveEmptyTileDown())
 			{
-				expandedNodes.Add(expandedNode);
-				expandedNode = node.DeepClone();
+				baseNodeClone = ProcessNodeExpansion(baseNode, baseNodeClone, expandedNodes);
 			}
 
-			if (expandedNode.MoveUp())
+			if (baseNodeClone.MoveEmptyTileUp())
 			{
-				expandedNodes.Add(expandedNode);
+				ProcessNodeExpansion(baseNode, baseNodeClone, expandedNodes);
 			}
 
 			return expandedNodes;
+		}
+
+		private static Node ProcessNodeExpansion(
+			Node baseNode,
+			Node baseNodeClone,
+			ICollection<Node> expandedNodes)
+		{
+			baseNodeClone.StartCost += baseNodeClone.CurrentCost;
+			baseNodeClone.CurrentCost = 0;
+			expandedNodes.Add(baseNodeClone);
+
+			return baseNode.DeepClone();
 		}
 	}
 }

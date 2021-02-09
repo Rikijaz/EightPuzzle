@@ -39,14 +39,19 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
-        <Compile Include="Program\NodePriorityQueue.cs" />
-        <Compile Include="Program\QueuingStrategy.cs" />
+        <Compile Include="Program\Nodes\PriorityQueue\NodeCostComparer.cs" />
+        <Compile Include="Program\Nodes\PriorityQueue\NodePriorityQueue.cs" />
+        <Compile Include="Program\Nodes\PriorityQueue\NodePriorityQueueBuilder.cs" />
+        <Compile Include="Program\QueueingStrategy\MisplacedTileQueuingStrategy.cs" />
+        <Compile Include="Program\QueueingStrategy\QueuingStrategy.cs" />
         <Compile Include="Program\Solver.cs" />
         <Compile Include="Program\Nodes\INodeTileController.cs" />
         <Compile Include="Program\Nodes\INodeHeuristicProvider.cs" />
         <Compile Include="Program\Nodes\Node.cs" />
         <Compile Include="Program\Problem.cs" />
         <Compile Include="Program\Program.cs" />
+        <Compile Include="Program\TestCases.cs" />
+        <Compile Include="Program\TestSuite.cs" />
         <Compile Include="Program\Tiles\ITileGridState.cs" />
         <Compile Include="Program\Tiles\Tile.cs" />
         <Compile Include="Program\Tiles\TileGrid.cs" />

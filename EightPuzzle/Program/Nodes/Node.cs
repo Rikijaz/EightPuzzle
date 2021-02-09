@@ -1,5 +1,6 @@
 ﻿#region
 
+using System.Collections.Generic;
 using EightPuzzle.Program.Tiles;
 using EightPuzzle.Program.Utility;
 
@@ -16,21 +17,26 @@ namespace EightPuzzle.Program.Nodes
 		{
 			TileGrid = tileGrid;
 			EmptyTilePosition = emptyTilePosition;
-			Cost = cost;
+			CurrentCost = cost;
+			TilePositionHistory = new HashSet<TilePosition>();
 		}
+
+		private HashSet<TilePosition> TilePositionHistory { get; }
 
 		private TileGrid TileGrid { get; }
 
 		private TilePosition EmptyTilePosition { get; set; }
 
-		public uint Cost { get; set; }
+		public uint CurrentCost { get; set; }
+
+		public uint StartCost { get; set; }
 
 		public ITileGridState TileGridState
 		{
 			get { return TileGrid; }
 		}
 
-		public bool MoveLeft()
+		public bool MoveEmptyTileLeft()
 		{
 			int newEmptyTileXCoordinate = EmptyTilePosition.X - 1;
 
@@ -48,7 +54,7 @@ namespace EightPuzzle.Program.Nodes
 			return true;
 		}
 
-		public bool MoveRight()
+		public bool MoveEmptyTileRight()
 		{
 			int newEmptyTileXCoordinate = EmptyTilePosition.X + 1;
 
@@ -66,7 +72,7 @@ namespace EightPuzzle.Program.Nodes
 			return true;
 		}
 
-		public bool MoveUp()
+		public bool MoveEmptyTileUp()
 		{
 			int newEmptyTileYCoordinate = EmptyTilePosition.Y - 1;
 
@@ -84,7 +90,7 @@ namespace EightPuzzle.Program.Nodes
 			return true;
 		}
 
-		public bool MoveDown()
+		public bool MoveEmptyTileDown()
 		{
 			int newEmptyTileYCoordinate = EmptyTilePosition.Y + 1;
 
@@ -102,10 +108,17 @@ namespace EightPuzzle.Program.Nodes
 			return true;
 		}
 
-		public Node DeepClone() => new Node(TileGrid.DeepClone(), EmptyTilePosition, Cost);
+		public Node DeepClone() => new Node(TileGrid.DeepClone(), EmptyTilePosition, CurrentCost);
 
 		private bool ProcessMovement(int changedCoordinate, TilePosition newEmptyTilePosition)
 		{
+			if (TilePositionHistory.Contains(newEmptyTilePosition))
+			{
+				LogUtility.Log($"{newEmptyTilePosition} has already been visited.", LogLevel.Trace);
+
+				return false;
+			}
+
 			if (!TileGrid.IsValidCoordinate(changedCoordinate))
 			{
 				LogUtility.Log(
@@ -117,6 +130,8 @@ namespace EightPuzzle.Program.Nodes
 
 			TileGrid.Swap(EmptyTilePosition, newEmptyTilePosition);
 			EmptyTilePosition = newEmptyTilePosition;
+
+			TilePositionHistory.Add(EmptyTilePosition);
 
 			return true;
 		}

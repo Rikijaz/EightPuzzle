@@ -2,21 +2,20 @@
 
 using System;
 using System.Collections.Generic;
-using EightPuzzle.Program.Nodes;
 
 #endregion
 
-namespace EightPuzzle.Program
+namespace EightPuzzle.Program.Nodes.PriorityQueue
 {
 	public class NodePriorityQueue
 	{
 		public NodePriorityQueue()
 		{
-			QueuesByPriority = new SortedDictionary<uint, Queue<Node>>();
+			QueuesByPriority = new SortedDictionary<uint, Queue<Node>>(new NodeCostComparer());
 			Count = 0;
 		}
 
-		private int Count { get; set; }
+		public int Count { get; private set; }
 
 		private SortedDictionary<uint, Queue<Node>> QueuesByPriority { get; }
 
@@ -24,12 +23,14 @@ namespace EightPuzzle.Program
 
 		public void Enqueue(Node node)
 		{
-			if (!QueuesByPriority.ContainsKey(node.Cost))
+			uint totalCost = node.StartCost + node.CurrentCost;
+
+			if (!QueuesByPriority.ContainsKey(totalCost))
 			{
-				QueuesByPriority.Add(node.Cost, new Queue<Node>());
+				QueuesByPriority.Add(totalCost, new Queue<Node>());
 			}
 
-			QueuesByPriority[node.Cost].Enqueue(node);
+			QueuesByPriority[totalCost].Enqueue(node);
 			Count++;
 		}
 
@@ -57,7 +58,7 @@ namespace EightPuzzle.Program
 			throw new IndexOutOfRangeException("");
 		}
 
-		public object Peek()
+		public Node Peek()
 		{
 			if (IsEmpty())
 			{

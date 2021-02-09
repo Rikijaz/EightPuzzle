@@ -8,11 +8,11 @@
 		{
 			Tile[,] tiles = new Tile[gridDimension, gridDimension];
 
-			for (uint y = 0; y < gridDimension; y++)
+			for (uint column = 0; column < gridDimension; column++)
 			{
-				for (uint x = 0; x < gridDimension; x++)
+				for (uint row = 0; row < gridDimension; row++)
 				{
-					tiles[y, x] = new Tile(inputs[y, x]);
+					tiles[row, column] = new Tile(inputs[column, row]);
 				}
 			}
 
@@ -28,8 +28,6 @@
 				for (int y = 0; y < tileGridState.GridDimension; y++)
 				{
 					tilePosition = new TilePosition(x, y);
-
-					Tile tile = tileGridState[tilePosition];
 
 					if (tileGridState[tilePosition].Value == EmptyTileValue)
 					{
