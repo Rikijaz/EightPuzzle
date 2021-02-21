@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Text;
 
 #endregion
 
@@ -11,37 +12,73 @@ namespace EightPuzzle.Program.Nodes.PriorityQueue
 	{
 		public NodePriorityQueue()
 		{
-			QueuesByPriority = new SortedDictionary<uint, Queue<Node>>(new NodeCostComparer());
+			QueuesByCost = new SortedDictionary<uint, Queue<Node>>(new NodeCostComparer());
 			Count = 0;
+			HighestCount = 0;
 		}
 
-		public int Count { get; private set; }
+		public uint NodeIdCounter { get; private set; }
 
-		private SortedDictionary<uint, Queue<Node>> QueuesByPriority { get; }
+		public uint Count { get; private set; }
 
-		public bool IsEmpty() => Count == 0;
+		public uint HighestCount { get; private set; }
+
+		public uint Depth { get; private set; }
+
+		private SortedDictionary<uint, Queue<Node>> QueuesByCost { get; }
+
+		public override string ToString()
+		{
+			StringBuilder stringBuilder = new StringBuilder();
+			stringBuilder.AppendLine("Node priority queue:");
+
+			foreach (KeyValuePair<uint, Queue<Node>> pair in QueuesByCost)
+			{
+				uint cost = pair.Key;
+				Queue<Node> nodes = pair.Value;
+
+				foreach (Node node in nodes)
+				{
+					stringBuilder.AppendLine($"Cost {cost} Node {node.Id}:\n{node.TileGridState}");
+				}
+			}
+
+			return stringBuilder.ToString();
+		}
 
 		public void Enqueue(Node node)
 		{
-			uint totalCost = node.StartCost + node.CurrentCost;
+			NodeIdCounter++;
 
-			if (!QueuesByPriority.ContainsKey(totalCost))
+			node.Id = NodeIdCounter;
+
+			if (node.Depth > Depth)
 			{
-				QueuesByPriority.Add(totalCost, new Queue<Node>());
+				Depth = node.Depth;
 			}
 
-			QueuesByPriority[totalCost].Enqueue(node);
+			if (!QueuesByCost.ContainsKey(node.Cost))
+			{
+				QueuesByCost.Add(node.Cost, new Queue<Node>());
+			}
+
+			QueuesByCost[node.Cost].Enqueue(node);
 			Count++;
+
+			if (Count > HighestCount)
+			{
+				HighestCount = Count;
+			}
 		}
 
 		public Node Dequeue()
 		{
-			if (IsEmpty())
+			if (Count == 0)
 			{
 				throw new ArgumentException("Priority queue cannot dequeue when it is empty.");
 			}
 
-			foreach (KeyValuePair<uint, Queue<Node>> pair in QueuesByPriority)
+			foreach (KeyValuePair<uint, Queue<Node>> pair in QueuesByCost)
 			{
 				Queue<Node> nodes = pair.Value;
 
@@ -53,26 +90,6 @@ namespace EightPuzzle.Program.Nodes.PriorityQueue
 				Count--;
 
 				return nodes.Dequeue();
-			}
-
-			throw new IndexOutOfRangeException("");
-		}
-
-		public Node Peek()
-		{
-			if (IsEmpty())
-			{
-				throw new ArgumentException("Priority queue cannot dequeue when it is empty.");
-			}
-
-			foreach (KeyValuePair<uint, Queue<Node>> pair in QueuesByPriority)
-			{
-				Queue<Node> nodes = pair.Value;
-
-				if (nodes.Count > 0)
-				{
-					return nodes.Peek();
-				}
 			}
 
 			throw new IndexOutOfRangeException("");

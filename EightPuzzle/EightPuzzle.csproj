@@ -39,29 +39,35 @@
         <Reference Include="System.Xml" />
     </ItemGroup>
     <ItemGroup>
+        <Compile Include="Program\Driver\Controller.cs" />
+        <Compile Include="Program\Driver\Program.cs" />
         <Compile Include="Program\Nodes\PriorityQueue\NodeCostComparer.cs" />
         <Compile Include="Program\Nodes\PriorityQueue\NodePriorityQueue.cs" />
         <Compile Include="Program\Nodes\PriorityQueue\NodePriorityQueueBuilder.cs" />
-        <Compile Include="Program\QueueingStrategy\ManhattanDistanceQueuingStrategy.cs" />
-        <Compile Include="Program\QueueingStrategy\MisplacedTileQueuingStrategy.cs" />
-        <Compile Include="Program\QueueingStrategy\QueuingStrategy.cs" />
-        <Compile Include="Program\Solution.cs" />
-        <Compile Include="Program\Solver.cs" />
-        <Compile Include="Program\Nodes\INodeTileController.cs" />
+        <Compile Include="Program\Problem\Problem.cs" />
+        <Compile Include="Program\Problem\Solution.cs" />
+        <Compile Include="Program\Problem\SolutionAnalysis.cs" />
+        <Compile Include="Program\Problem\Solver.cs" />
+        <Compile Include="Program\QueueingStrategies\ManhattanDistanceQueueingStrategy.cs" />
+        <Compile Include="Program\QueueingStrategies\MisplacedTileQueueingStrategy.cs" />
+        <Compile Include="Program\QueueingStrategies\QueueingStrategy.cs" />
+        <Compile Include="Program\QueueingStrategies\QueueingStrategyType.cs" />
+        <Compile Include="Program\QueueingStrategies\UniformedSearchQueueingStrategy.cs" />
         <Compile Include="Program\Nodes\INodeHeuristicProvider.cs" />
         <Compile Include="Program\Nodes\Node.cs" />
-        <Compile Include="Program\Problem.cs" />
-        <Compile Include="Program\Program.cs" />
-        <Compile Include="Program\TestCases.cs" />
-        <Compile Include="Program\TestSuite.cs" />
-        <Compile Include="Program\Tiles\ITileGridState.cs" />
+        <Compile Include="Program\Tests\TestCases.cs" />
+        <Compile Include="Program\Tests\TestSuite.cs" />
+        <Compile Include="Program\Tiles\TileGridState.cs" />
         <Compile Include="Program\Tiles\Tile.cs" />
         <Compile Include="Program\Tiles\TileGrid.cs" />
         <Compile Include="Program\Tiles\TileGridUtility.cs" />
         <Compile Include="Program\Tiles\TilePosition.cs" />
-        <Compile Include="Program\Utility\LogLevel.cs" />
-        <Compile Include="Program\Utility\LogUtility.cs" />
+        <Compile Include="Program\Logging\LogLevel.cs" />
+        <Compile Include="Program\Logging\LogUtility.cs" />
         <Compile Include="Properties\AssemblyInfo.cs" />
+    </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Program\Problems" />
     </ItemGroup>
     <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
     <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

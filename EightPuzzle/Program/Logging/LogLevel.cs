@@ -1,4 +1,4 @@
-﻿namespace EightPuzzle.Program.Utility
+﻿namespace EightPuzzle.Program.Logging
 {
 	public enum LogLevel
 	{

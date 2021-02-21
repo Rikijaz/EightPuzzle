@@ -1,11 +1,12 @@
 ﻿#region
 
 using System.Collections.Generic;
+using EightPuzzle.Program.Problem;
 using EightPuzzle.Program.Tiles;
 
 #endregion
 
-namespace EightPuzzle.Program
+namespace EightPuzzle.Program.Tests
 {
 	public static class TestCases
 	{
@@ -41,6 +42,7 @@ namespace EightPuzzle.Program
 						{ 4, 7, 8 },
 					}
 				},
+
 				{
 					8,
 					new uint[,]
@@ -78,7 +80,7 @@ namespace EightPuzzle.Program
 					}
 				},
 				{
-					25,
+					24,
 					new uint[,]
 					{
 						{ 0, 7, 2 },
@@ -88,15 +90,12 @@ namespace EightPuzzle.Program
 				},
 			};
 
-		public static readonly IReadOnlyDictionary<uint, Problem> ProblemsByDepth;
-
-		private static readonly Solution Solution =
-			TileGridUtility.CreateAnswerInstance(PuzzleGridDimension);
+		public static readonly IReadOnlyDictionary<uint, Problem.Problem> ProblemsByDepth;
 
 		static TestCases()
 		{
-			Dictionary<uint, Problem> problemsByDepth =
-				new Dictionary<uint, Problem>(InputCasesByDepth.Count);
+			Dictionary<uint, Problem.Problem> problemsByDepth =
+				new Dictionary<uint, Problem.Problem>(InputCasesByDepth.Count);
 
 			foreach (KeyValuePair<uint, uint[,]> pair in InputCasesByDepth)
 			{
@@ -104,9 +103,15 @@ namespace EightPuzzle.Program
 
 				uint[,] testCase = pair.Value;
 
-				Problem problem = new Problem(
-					TileGridUtility.CreateInputInstance(testCase, PuzzleGridDimension),
-					Solution);
+				TileGrid tileGrid =
+					TileGridUtility.CreateInputInstance(testCase, PuzzleGridDimension);
+
+				Solution solution =
+					TileGridUtility.CreateAnswerInstance(tileGrid, PuzzleGridDimension);
+
+				Problem.Problem problem = new Problem.Problem(
+					tileGrid,
+					solution);
 
 				problemsByDepth.Add(depth, problem);
 			}

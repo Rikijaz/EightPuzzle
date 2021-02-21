@@ -1,8 +1,8 @@
 ﻿#region
 
 using System.Collections.Generic;
+using EightPuzzle.Program.Logging;
 using EightPuzzle.Program.Tiles;
-using EightPuzzle.Program.Utility;
 
 #endregion
 
@@ -16,38 +16,43 @@ namespace EightPuzzle.Program.Nodes
 		public Node(
 			in TileGrid tileGrid,
 			in TilePosition emptyTilePosition,
-			uint startCost,
-			uint currentCost)
+			TileGridState parentTileGridState)
 		{
 			TileGrid = tileGrid;
 			EmptyTilePosition = emptyTilePosition;
-			StartCost = startCost;
-			CurrentCost = currentCost;
+			ParentTileGridState = parentTileGridState;
 			TilePositionHistory = new HashSet<TilePosition>();
 		}
 
-		public Node(
+		private Node(
 			in TileGrid tileGrid,
-			in TilePosition emptyTilePosition)
+			in TilePosition emptyTilePosition,
+			HashSet<TilePosition> tilePositionHistory,
+			TileGridState parentTileGridState,
+			uint depth)
 		{
 			TileGrid = tileGrid;
 			EmptyTilePosition = emptyTilePosition;
-			StartCost = 0;
-			CurrentCost = 0;
-			TilePositionHistory = new HashSet<TilePosition>();
+			TilePositionHistory = tilePositionHistory;
+			ParentTileGridState = parentTileGridState;
+			Depth = depth;
 		}
+
+		public uint Depth { get; set; }
+
+		public uint Id { get; set; }
 
 		private HashSet<TilePosition> TilePositionHistory { get; }
 
+		public TileGridState ParentTileGridState { get; }
+
 		private TileGrid TileGrid { get; }
+
+		public uint Cost { get; set; }
 
 		public TilePosition EmptyTilePosition { get; private set; }
 
-		public uint CurrentCost { get; set; }
-
-		public uint StartCost { get; set; }
-
-		public ITileGridState TileGridState
+		public TileGridState TileGridState
 		{
 			get { return TileGrid; }
 		}
@@ -90,7 +95,7 @@ namespace EightPuzzle.Program.Nodes
 
 		public bool MoveEmptyTileUp()
 		{
-			int newEmptyTileYCoordinate = EmptyTilePosition.Y - 1;
+			int newEmptyTileYCoordinate = EmptyTilePosition.Y + 1;
 
 			TilePosition newEmptyTilePosition = new TilePosition(
 				EmptyTilePosition.X,
@@ -108,7 +113,7 @@ namespace EightPuzzle.Program.Nodes
 
 		public bool MoveEmptyTileDown()
 		{
-			int newEmptyTileYCoordinate = EmptyTilePosition.Y + 1;
+			int newEmptyTileYCoordinate = EmptyTilePosition.Y - 1;
 
 			TilePosition newEmptyTilePosition = new TilePosition(
 				EmptyTilePosition.X,
@@ -124,18 +129,16 @@ namespace EightPuzzle.Program.Nodes
 			return true;
 		}
 
-		public Node DeepClone() =>
-			new Node(TileGrid.DeepClone(), EmptyTilePosition, StartCost, CurrentCost);
+		public Node DeepClone(TileGridState parentTileGridState) =>
+			new Node(
+				TileGrid.DeepClone(),
+				EmptyTilePosition,
+				TilePositionHistory,
+				parentTileGridState,
+				Depth);
 
 		private bool ProcessMovement(int changedCoordinate, TilePosition newEmptyTilePosition)
 		{
-			if (TilePositionHistory.Contains(newEmptyTilePosition))
-			{
-				LogUtility.Log($"{newEmptyTilePosition} has already been visited.", LogLevel.Trace);
-
-				return false;
-			}
-
 			if (!TileGrid.IsValidCoordinate(changedCoordinate))
 			{
 				LogUtility.Log(
@@ -147,8 +150,6 @@ namespace EightPuzzle.Program.Nodes
 
 			TileGrid.Swap(EmptyTilePosition, newEmptyTilePosition);
 			EmptyTilePosition = newEmptyTilePosition;
-
-			TilePositionHistory.Add(EmptyTilePosition);
 
 			return true;
 		}

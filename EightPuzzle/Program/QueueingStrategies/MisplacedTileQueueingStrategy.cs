@@ -1,18 +1,19 @@
 ﻿#region
 
 using EightPuzzle.Program.Nodes;
+using EightPuzzle.Program.Problem;
 using EightPuzzle.Program.Tiles;
 
 #endregion
 
-namespace EightPuzzle.Program.QueueingStrategy
+namespace EightPuzzle.Program.QueueingStrategies
 {
-	public class MisplacedTileQueuingStrategy : QueuingStrategy
+	public class MisplacedTileQueueingStrategy : QueueingStrategy
 	{
-		public static readonly MisplacedTileQueuingStrategy Instance =
-			new MisplacedTileQueuingStrategy();
+		public static readonly MisplacedTileQueueingStrategy Instance =
+			new MisplacedTileQueueingStrategy();
 
-		private MisplacedTileQueuingStrategy()
+		private MisplacedTileQueueingStrategy() : base(QueueingStrategyType.MisplacedTile)
 		{
 		}
 
@@ -22,7 +23,7 @@ namespace EightPuzzle.Program.QueueingStrategy
 		{
 			uint misplacedTileCount = 0;
 
-			ITileGridState tileGridState = nodeHeuristicProvider.TileGridState;
+			TileGridState tileGridState = nodeHeuristicProvider.TileGridState;
 
 			for (int x = 0; x < tileGridState.GridDimension; x++)
 			{

@@ -1,11 +1,11 @@
 ﻿#region
 
+using EightPuzzle.Program.Logging;
 using EightPuzzle.Program.Tiles;
-using EightPuzzle.Program.Utility;
 
 #endregion
 
-namespace EightPuzzle.Program
+namespace EightPuzzle.Program.Problem
 {
 	public class Problem
 	{
@@ -21,7 +21,7 @@ namespace EightPuzzle.Program
 
 		public Solution Solution { get; }
 
-		public bool Solve(ITileGridState tileGridState)
+		public bool Solve(TileGridState tileGridState)
 		{
 			for (int x = 0; x < tileGridState.GridDimension; x++)
 			{

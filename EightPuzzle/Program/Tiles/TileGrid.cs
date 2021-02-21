@@ -1,29 +1,26 @@
 ﻿#region
 
 using System.Text;
-using EightPuzzle.Program.Utility;
+using EightPuzzle.Program.Logging;
 
 #endregion
 
 namespace EightPuzzle.Program.Tiles
 {
-	public class TileGrid : ITileGridState
+	public class TileGrid : TileGridState
 	{
-		public TileGrid(Tile[,] tiles, uint gridDimension)
+		public TileGrid(Tile[,] tiles, uint gridDimension) : base(gridDimension)
 		{
 			Tiles = tiles;
-			GridDimension = gridDimension;
 		}
 
 		public Tile[,] Tiles { get; }
 
-		public Tile this[TilePosition tilePosition]
+		public override Tile this[TilePosition tilePosition]
 		{
 			get { return Tiles[tilePosition.X, tilePosition.Y]; }
-			private set { Tiles[tilePosition.X, tilePosition.Y] = value; }
+			protected set { Tiles[tilePosition.X, tilePosition.Y] = value; }
 		}
-
-		public uint GridDimension { get; }
 
 		public bool IsValidCoordinate(int coordinate) =>
 			(coordinate >= 0) && (coordinate < GridDimension);

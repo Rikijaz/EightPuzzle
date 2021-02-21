@@ -1,6 +1,7 @@
 ﻿#region
 
 using System.Collections.Generic;
+using EightPuzzle.Program.Problem;
 
 #endregion
 
@@ -8,7 +9,7 @@ namespace EightPuzzle.Program.Tiles
 {
 	public static class TileGridUtility
 	{
-		private const uint EmptyTileValue = 0;
+		public const uint EmptyTileValue = 0;
 
 		public static TileGrid CreateInputInstance(uint[,] inputs, uint gridDimension)
 		{
@@ -26,7 +27,7 @@ namespace EightPuzzle.Program.Tiles
 		}
 
 		public static bool TryFindEmptyTilePosition(
-			ITileGridState tileGridState,
+			TileGridState tileGridState,
 			out TilePosition tilePosition)
 		{
 			for (int x = 0; x < tileGridState.GridDimension; x++)
@@ -47,11 +48,16 @@ namespace EightPuzzle.Program.Tiles
 			return false;
 		}
 
-		public static Solution CreateAnswerInstance(uint gridDimension)
+		public static Solution CreateAnswerInstance(
+			TileGridState initialGridState,
+			uint gridDimension)
 		{
 			Tile[,] tiles = new Tile[gridDimension, gridDimension];
 
-			Dictionary<Tile, TilePosition> tilePositionsByTile =
+			Dictionary<Tile, TilePosition> startTilePositionsByTile =
+				new Dictionary<Tile, TilePosition>(tiles.Length);
+
+			Dictionary<Tile, TilePosition> finalTilePositionsByTile =
 				new Dictionary<Tile, TilePosition>(tiles.Length);
 
 			uint value = 1;
@@ -70,14 +76,15 @@ namespace EightPuzzle.Program.Tiles
 					}
 
 					TilePosition tilePosition = new TilePosition(row, column);
-					tilePositionsByTile.Add(tiles[row, column], tilePosition);
+					startTilePositionsByTile.Add(initialGridState[tilePosition], tilePosition);
+					finalTilePositionsByTile.Add(tiles[row, column], tilePosition);
 					value++;
 				}
 			}
 
 			TileGrid tileGrid = new TileGrid(tiles, gridDimension);
 
-			return new Solution(tileGrid, tilePositionsByTile);
+			return new Solution(tileGrid, startTilePositionsByTile, finalTilePositionsByTile);
 		}
 
 		public static TileGrid DeepClone(uint gridDimension)
