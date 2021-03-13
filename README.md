@@ -13,9 +13,9 @@ In this report, I will analyze three algorithms for solving this puzzle:
 
 **Uniform Cost Search**
 
-According to Dr. Keogh, the uniform cost search algorithm is an “_A* [algorithm] with h(n) hardcoded to equal zero_” [^1]   that “_measures the cost to each node from the initial state_” [^2]. Because the algorithm’s heuristic is effectively useless, it will simply choose the cheapest expanded node.
+According to Dr. Keogh, the uniform cost search algorithm is an “_A-Star [algorithm] with h(n) hardcoded to equal zero_” [^1]   that “_measures the cost to each node from the initial state_” [^2]. Because the algorithm’s heuristic is effectively useless, it will simply choose the cheapest expanded node.
 
-**A* with the Misplaced Tile heuristic**
+**A-Star with the Misplaced Tile heuristic**
 
 This algorithm’s heuristic considers the number of misplaced tiles (excluding the empty tile) for the heuristic h(n). So in Figure 2, the h(n) is 3.
 
@@ -25,7 +25,7 @@ This algorithm’s heuristic considers the number of misplaced tiles (excluding 
 
 Figure 2: A comparison between a state with misplaced tiles and the goal state
 
-**A* with the Manhattan Distance heuristic**
+**A-Star with the Manhattan Distance heuristic**
 
 This algorithm’s heuristic considers the total offset distance from the misplaced tile positions to their respective goal tile positions.  So in Figure 3, the h(n) is 2 + 1 + 1 + 1 = 5.
 
